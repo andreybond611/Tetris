@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Tetris.GameStates;
 
 namespace Tetris
 {
@@ -11,11 +12,14 @@ namespace Tetris
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        private GameStateChanger _gameStateChanger;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.PreferredBackBufferHeight = 500;
+            graphics.PreferredBackBufferWidth = 320;
         }
 
         /// <summary>
@@ -27,6 +31,8 @@ namespace Tetris
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            // Set initial state
+            _gameStateChanger = new GameStateChanger(new EmptyState());
 
             base.Initialize();
         }
@@ -41,6 +47,8 @@ namespace Tetris
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            TextureStore.SpriteBatch = spriteBatch;
+            TextureStore.LoadContent(this.Content);
         }
 
         /// <summary>
@@ -63,6 +71,7 @@ namespace Tetris
                 Exit();
 
             // TODO: Add your update logic here
+            _gameStateChanger.GetCurrentState().Execute(gameTime);
 
             base.Update(gameTime);
         }
@@ -76,6 +85,9 @@ namespace Tetris
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            spriteBatch.Begin();
+            _gameStateChanger.GetCurrentState().Draw(gameTime);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
