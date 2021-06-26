@@ -10,6 +10,8 @@ int main()
 
     Game::getGame().startGame();
 	
+    sf::Clock clock;
+	
     while (window.isOpen())
     {
         auto game = Game::getGame().getGameMode();
@@ -22,6 +24,8 @@ int main()
         	
            game->processEvent(event);
         }
+
+        game->update(clock.restart());
 
         window.clear();
     	

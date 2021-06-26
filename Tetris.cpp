@@ -2,14 +2,17 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/System/Clock.hpp>
 #include "Game.h"
+#include "Tetrominos/J.h"
+#include "Tetrominos/Tetromino.h"
 
 Tetris::Tetris()
 {
 	playfield.reserve(playfieldSize.y);
 	for (sf::Uint32 rowCount = 0; rowCount < playfieldSize.y; ++rowCount)
 	{
-		std::vector<TetrisCell> newRow;
+		std::vector<PlayfieldCell> newRow;
 		playfield.push_back(newRow);
 		playfield[rowCount].reserve(playfieldSize.x);
 		for (sf::Uint32 columnCount = 0; columnCount < playfieldSize.x; ++columnCount)
@@ -20,6 +23,8 @@ Tetris::Tetris()
 			playfield[rowCount].push_back({0, cell});
 		}
 	}
+
+	spawnTetromino(new J());
 }
 
 Tetris::~Tetris()
@@ -34,6 +39,17 @@ Tetris::~Tetris()
 	}
 }
 
+sf::Color Tetris::getColorForSymbol(sf::Int32 symbol)
+{
+	switch (symbol)
+	{
+	case 'j':
+		return sf::Color::Blue;
+	default:
+		return sf::Color::Black;
+	}
+}
+
 void Tetris::draw(sf::RenderTarget* renderTarget)
 {
 	for (sf::Uint32 rowCount = 0; rowCount < playfield.size(); ++rowCount)
@@ -41,15 +57,58 @@ void Tetris::draw(sf::RenderTarget* renderTarget)
 		for (sf::Uint32 columnCount = 0; columnCount < playfield[rowCount].size(); ++columnCount)
 		{
 			auto cellImage = playfield[rowCount][columnCount].image;
-			
-			cellImage->setFillColor(sf::Color::Green);
+			auto symbol = playfield[rowCount][columnCount].symbol;
+
+			cellImage->setFillColor(getColorForSymbol(symbol));
 			
 			renderTarget->draw(*cellImage);
 		}
 	}
 }
 
-void Tetris::processEvent(sf::Event& event)
+void Tetris::processEvent(const sf::Event& event)
 {
 	
+}
+
+void Tetris::update(const sf::Time& elapsedTime)
+{
+	timeCounter += elapsedTime.asMicroseconds();
+	if (timeCounter > maxTime)
+	{
+		timeCounter = 0;
+		eraseTetromino(fallingTetromino);
+		fallingTetromino->fall();
+		drawTetromino(fallingTetromino);
+	}
+}
+
+void Tetris::spawnTetromino(Tetromino* tetromino)
+{
+	fallingTetromino = tetromino;
+
+	fallingTetromino->addPosition(startingPosition);
+	drawTetromino(fallingTetromino);
+
+}
+
+void Tetris::setCell(sf::Int32 x, sf::Int32 y, sf::Int32 symbol)
+{
+	playfield[y][x].symbol = symbol;
+}
+
+void Tetris::drawTetromino(Tetromino* tetromino)
+{
+	for (const auto& position : tetromino->getPosition())
+	{
+		setCell(position.x, position.y, tetromino->getSymbol());
+	}
+}
+
+void Tetris::eraseTetromino(Tetromino* tetromino)
+{
+	for (const auto& position : tetromino->getPosition())
+	{
+		setCell(position.x, position.y, 0);
+	}
 }
