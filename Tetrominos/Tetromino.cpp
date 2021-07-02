@@ -9,6 +9,11 @@ void Tetromino::addPosition(sf::Vector2i positionToAdd)
 	}
 }
 
+void Tetromino::rotate()
+{
+	
+}
+
 void Tetromino::fall()
 {
 	addPosition(sf::Vector2i(0, 1));

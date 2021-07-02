@@ -1,8 +1,8 @@
 #pragma once
 #include "Tetromino.h"
 
-class J : public Tetromino
+class O : public Tetromino
 {
 public:
-	J();
+	O();
 };

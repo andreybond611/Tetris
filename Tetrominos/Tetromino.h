@@ -10,11 +10,18 @@ class Tetromino
 {
 public:
 	virtual ~Tetromino() = default;
+	
 	std::array<sf::Vector2i, 4> getPosition()const { return position; }
+	
 	sf::Int32 getSymbol()const { return symbol; }
+	
 	void addPosition(sf::Vector2i positionToAdd);
-	virtual void rotate() = 0;
+	
+	virtual void rotate();
+	
+	/** drop 1 unit down  */
 	void fall();
+
 protected:
 	std::array<sf::Vector2i, 4> position;
 	sf::Int32 symbol;
