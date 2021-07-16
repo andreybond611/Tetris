@@ -1,0 +1,9 @@
+#pragma once
+#include "Tetrominos/Tetromino.h"
+#include "Tetrominos/I.h"
+#include "Tetrominos/J.h"
+#include "Tetrominos/S.h"
+#include "Tetrominos/L.h"
+#include "Tetrominos/Z.h"
+#include "Tetrominos/O.h"
+#include "Tetrominos/T.h"

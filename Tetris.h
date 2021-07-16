@@ -6,6 +6,8 @@
 
 #include "GameMode.h"
 
+#define EMPTY 0
+
 class Tetromino;
 
 namespace sf {
@@ -26,7 +28,7 @@ class Tetris : public GameMode
 public:
 	Tetris();
 	~Tetris() override;
-	sf::Color getColorForSymbol(sf::Int32 symbol);
+	sf::Color getColorFromSymbol(sf::Int32 symbol);
 	virtual void draw(sf::RenderTarget* renderTarget) override;
 	virtual void processEvent(const sf::Event& event) override;
 	virtual void update(const sf::Time& elapsedTime) override;
@@ -34,8 +36,11 @@ public:
 private:
 	void spawnTetromino(Tetromino* tetromino);
 	void setCell(sf::Int32 x, sf::Int32 y, sf::Int32 symbol);
+	sf::Int32 getCell(sf::Int32 x, sf::Int32 y)const;
 	void drawTetromino(Tetromino* tetromino);
 	void eraseTetromino(Tetromino* tetromino);
+	bool isPointInPlayfieldBorders(const sf::Vector2i& point);
+	bool isColliding(Tetromino* tetromino, sf::Vector2i direction);
 	
 	const sf::Vector2i startingPosition{4, 1};
 	Tetromino* fallingTetromino;

@@ -19,7 +19,7 @@ public:
 	
 	virtual void rotate();
 	
-	/** drop 1 unit down  */
+	/** drop 1 cell down  */
 	void fall();
 
 protected:
