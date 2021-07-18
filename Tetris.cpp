@@ -77,18 +77,51 @@ void Tetris::draw(sf::RenderTarget* renderTarget)
 	}
 }
 
-void Tetris::processEvent(const sf::Event& event)
+void Tetris::moveFallingTetromino(const sf::Vector2i direction)
 {
+	if (!isColliding(fallingTetromino, direction))
+	{
+		eraseTetromino(fallingTetromino);
+		fallingTetromino->addPosition(direction);
+		drawTetromino(fallingTetromino);
+	}
+}
+
+void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
+{
+	const auto left = sf::Vector2i(-1, 0);
+	const auto right = sf::Vector2i(1, 0);
 	
+	switch (key.code)
+	{
+	case sf::Keyboard::A:
+		moveFallingTetromino(left);
+		break;
+	case sf::Keyboard::D:
+		moveFallingTetromino(right);
+		break;
+	default:
+		break;
+	}
+}
+
+void Tetris::takeCareOfEvent(const sf::Event& event)
+{
+	if (event.type == sf::Event::KeyPressed)
+	{
+		takeCareOfInput(event.key);
+	}
 }
 
 void Tetris::update(const sf::Time& elapsedTime)
 {
+	const auto down = sf::Vector2i{ 0, 1 };
+	
 	timeCounter += elapsedTime.asMicroseconds();
 	if (timeCounter > maxTime)
 	{
 		timeCounter = 0;
-		if (isColliding(fallingTetromino, sf::Vector2i{ 0, 1 }))
+		if (isColliding(fallingTetromino, down))
 		{
 			spawnTetromino(new S());
 		}
@@ -139,7 +172,7 @@ void Tetris::eraseTetromino(Tetromino* tetromino)
 bool Tetris::isPointInPlayfieldBorders(const sf::Vector2i& point)
 {
 	return point.x < playfieldSize.x && point.y < playfieldSize.y
-		&& point.x > 0 && point.y > 0;
+		&& point.x >= 0 && point.y >= 0;
 }
 
 bool Tetris::isColliding(Tetromino* tetromino, sf::Vector2i direction)

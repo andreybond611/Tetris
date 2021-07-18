@@ -22,7 +22,7 @@ int main()
             if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
                 window.close();
         	
-           game->processEvent(event);
+           game->takeCareOfEvent(event);
         }
 
         game->update(clock.restart());

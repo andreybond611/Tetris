@@ -3,6 +3,7 @@
 #include <SFML/Config.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Window/Event.hpp>
 
 #include "GameMode.h"
 
@@ -30,7 +31,9 @@ public:
 	~Tetris() override;
 	sf::Color getColorFromSymbol(sf::Int32 symbol);
 	virtual void draw(sf::RenderTarget* renderTarget) override;
-	virtual void processEvent(const sf::Event& event) override;
+	void moveFallingTetromino(sf::Vector2i direction);
+	void takeCareOfInput(const sf::Event::KeyEvent& key);
+	virtual void takeCareOfEvent(const sf::Event& event) override;
 	virtual void update(const sf::Time& elapsedTime) override;
 	std::vector<std::vector<PlayfieldCell>> getPlayfield()const { return playfield; }
 private:
