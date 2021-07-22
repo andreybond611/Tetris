@@ -8,5 +8,7 @@ J::J()
 	position[3] = sf::Vector2i(1, 0);
 
 	symbol = 'j';
+
+	pivotPtr = &position[2];
 }
 

@@ -8,5 +8,12 @@ O::O()
 	position[3] = sf::Vector2i(1, -1);
 
 	symbol = 'o';
+
+	pivotPtr = &position[1];
+}
+
+void O::rotate(bool isClockwise)
+{
+	// can't rotate
 }
 

@@ -8,5 +8,7 @@ T::T()
 	position[3] = sf::Vector2i(1, 0);
 
 	symbol = 't';
+
+	pivotPtr = &position[1];
 }
 

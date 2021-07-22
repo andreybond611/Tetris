@@ -17,7 +17,7 @@ public:
 	
 	void addPosition(sf::Vector2i positionToAdd);
 	
-	virtual void rotate();
+	virtual void rotate(bool isClockwise);
 	
 	/** drop 1 cell down  */
 	void fall();
@@ -25,4 +25,5 @@ public:
 protected:
 	std::array<sf::Vector2i, 4> position;
 	sf::Int32 symbol;
+	sf::Vector2i* pivotPtr {};
 };

@@ -32,6 +32,7 @@ public:
 	sf::Color getColorFromSymbol(sf::Int32 symbol);
 	virtual void draw(sf::RenderTarget* renderTarget) override;
 	void moveFallingTetromino(sf::Vector2i direction);
+	void rotateFallingTetromino(bool isClockwise);
 	void takeCareOfInput(const sf::Event::KeyEvent& key);
 	virtual void takeCareOfEvent(const sf::Event& event) override;
 	virtual void update(const sf::Time& elapsedTime) override;
@@ -44,6 +45,7 @@ private:
 	void eraseTetromino(Tetromino* tetromino);
 	bool isPointInPlayfieldBorders(const sf::Vector2i& point);
 	bool isColliding(Tetromino* tetromino, sf::Vector2i direction);
+	bool isColliding(Tetromino* tetromino, bool isClockwise);
 	
 	const sf::Vector2i startingPosition{4, 1};
 	Tetromino* fallingTetromino;

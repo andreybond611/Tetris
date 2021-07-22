@@ -23,7 +23,7 @@ Tetris::Tetris()
 		}
 	}
 
-	spawnTetromino(new Z());
+	spawnTetromino(new I());
 }
 
 Tetris::~Tetris()
@@ -87,6 +87,16 @@ void Tetris::moveFallingTetromino(const sf::Vector2i direction)
 	}
 }
 
+void Tetris::rotateFallingTetromino(bool isClockwise)
+{
+	/*if (!isColliding(fallingTetromino, isClockwise))
+	{*/
+		eraseTetromino(fallingTetromino);
+		fallingTetromino->rotate(isClockwise);
+		drawTetromino(fallingTetromino);
+	/*}*/	
+}
+
 void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
 {
 	const auto left = sf::Vector2i(-1, 0);
@@ -99,6 +109,12 @@ void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
 		break;
 	case sf::Keyboard::D:
 		moveFallingTetromino(right);
+		break;
+	case sf::Keyboard::R:
+		rotateFallingTetromino(true);
+		break;
+	case sf::Keyboard::E:
+		rotateFallingTetromino(false);
 		break;
 	default:
 		break;
@@ -182,10 +198,10 @@ bool Tetris::isColliding(Tetromino* tetromino, sf::Vector2i direction)
 	
 	for (auto& point : tetromino->getPosition())
 	{
-		auto pointToCheck= point + direction;
+		const sf::Vector2i pointToCheck = point + direction;
 		if (isPointInPlayfieldBorders(pointToCheck))
 		{
-			auto cellToCheck = getCell(pointToCheck.x, pointToCheck.y);
+			const sf::Int32 cellToCheck = getCell(pointToCheck.x, pointToCheck.y);
 			if (cellToCheck != EMPTY)
 			{
 				drawTetromino(tetromino);
@@ -198,6 +214,35 @@ bool Tetris::isColliding(Tetromino* tetromino, sf::Vector2i direction)
 			return true;
 		}
 	}
+	drawTetromino(tetromino);
+	return false;
+}
+
+bool Tetris::isColliding(Tetromino* tetromino, bool isClockwise)
+{
+	eraseTetromino(tetromino);
+	tetromino->rotate(isClockwise);
+
+	for (auto point : tetromino->getPosition())
+	{
+		if (isPointInPlayfieldBorders(point))
+		{
+			const sf::Int32 cellToCheck = getCell(point.x, point.y);
+			if (cellToCheck != EMPTY)
+			{
+				tetromino->rotate(!isClockwise);
+				drawTetromino(tetromino);
+				return true;
+			}
+		}
+		else
+		{
+			tetromino->rotate(!isClockwise);
+			drawTetromino(tetromino);
+			return true;
+		}
+	}
+	tetromino->rotate(!isClockwise);
 	drawTetromino(tetromino);
 	return false;
 }

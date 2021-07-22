@@ -8,5 +8,7 @@ Z::Z()
 	position[3] = sf::Vector2i(1, 0);
 
 	symbol = 'z';
+
+	pivotPtr = &position[2];
 }
 
