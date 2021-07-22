@@ -18,14 +18,14 @@ Tetris::Tetris()
 		playfield[rowCount].reserve(playfieldSize.x);
 		for (sf::Uint32 columnCount = 0; columnCount < playfieldSize.x; ++columnCount)
 		{
-			sf::RectangleShape* cellImage = new sf::RectangleShape{ sf::Vector2f(squareSize, squareSize) };
+			auto* cellImage = new sf::RectangleShape{ sf::Vector2f(squareSize, squareSize) };
 			cellImage->setPosition(sf::Vector2f(squareSize * columnCount, squareSize * rowCount));
 			
 			playfield[rowCount].push_back({EMPTY, cellImage});
 		}
 	}
 
-	spawnTetromino(new I());
+	spawnTetromino(Queue.GetNext());
 }
 
 Tetris::~Tetris()
@@ -154,7 +154,7 @@ void Tetris::takeCareOfEvent(const sf::Event& event)
 void Tetris::nextTetromino()
 {
 	delete fallingTetromino;
-	spawnTetromino(new S());
+	spawnTetromino(Queue.GetNext());
 }
 
 void Tetris::update(const sf::Time& elapsedTime)

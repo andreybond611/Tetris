@@ -6,6 +6,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include "GameMode.h"
+#include "TetroQueue.h"
 
 #define EMPTY 0
 
@@ -41,7 +42,7 @@ public:
 private:
 	void spawnTetromino(Tetromino* tetromino);
 	void setCell(sf::Int32 x, sf::Int32 y, sf::Int32 symbol);
-	sf::Int32 getCell(sf::Int32 x, sf::Int32 y)const;
+	[[nodiscard]]sf::Int32 getCell(sf::Int32 x, sf::Int32 y)const;
 	void drawTetromino(Tetromino* tetromino);
 	void eraseTetromino(Tetromino* tetromino);
 	bool isPointInPlayfieldBorders(const sf::Vector2i& point);
@@ -55,5 +56,6 @@ private:
 	std::vector<std::vector<PlayfieldCell>> playfield;
 	sf::Int64 timeCounter{0};
 	sf::Int64 maxTime{ 1000000 };
+	TetroQueue Queue {};
 };
 
