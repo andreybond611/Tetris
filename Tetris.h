@@ -35,6 +35,7 @@ public:
 	void rotateFallingTetromino(bool isClockwise);
 	void takeCareOfInput(const sf::Event::KeyEvent& key);
 	virtual void takeCareOfEvent(const sf::Event& event) override;
+	void nextTetromino();
 	virtual void update(const sf::Time& elapsedTime) override;
 	std::vector<std::vector<PlayfieldCell>> getPlayfield()const { return playfield; }
 private:
@@ -46,6 +47,8 @@ private:
 	bool isPointInPlayfieldBorders(const sf::Vector2i& point);
 	bool isColliding(Tetromino* tetromino, sf::Vector2i direction);
 	bool isColliding(Tetromino* tetromino, bool isClockwise);
+	void speedUp();
+	void slowDown();
 	
 	const sf::Vector2i startingPosition{4, 1};
 	Tetromino* fallingTetromino;

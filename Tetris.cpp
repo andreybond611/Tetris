@@ -1,4 +1,6 @@
 #include "Tetris.h"
+
+#include <functional>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -89,12 +91,22 @@ void Tetris::moveFallingTetromino(const sf::Vector2i direction)
 
 void Tetris::rotateFallingTetromino(bool isClockwise)
 {
-	/*if (!isColliding(fallingTetromino, isClockwise))
-	{*/
+	if (!isColliding(fallingTetromino, isClockwise))
+	{
 		eraseTetromino(fallingTetromino);
 		fallingTetromino->rotate(isClockwise);
 		drawTetromino(fallingTetromino);
-	/*}*/	
+	}	
+}
+
+void Tetris::speedUp()
+{
+	maxTime = 50000;
+}
+
+void Tetris::slowDown()
+{
+	maxTime = 1000000;
 }
 
 void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
@@ -116,6 +128,9 @@ void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
 	case sf::Keyboard::E:
 		rotateFallingTetromino(false);
 		break;
+	case sf::Keyboard::S:
+		speedUp();
+		break;
 	default:
 		break;
 	}
@@ -127,6 +142,19 @@ void Tetris::takeCareOfEvent(const sf::Event& event)
 	{
 		takeCareOfInput(event.key);
 	}
+	else if (event.type == sf::Event::KeyReleased)
+	{
+		if (event.key.code == sf::Keyboard::S)
+		{
+			slowDown();
+		}
+	}
+}
+
+void Tetris::nextTetromino()
+{
+	delete fallingTetromino;
+	spawnTetromino(new S());
 }
 
 void Tetris::update(const sf::Time& elapsedTime)
@@ -139,7 +167,7 @@ void Tetris::update(const sf::Time& elapsedTime)
 		timeCounter = 0;
 		if (isColliding(fallingTetromino, down))
 		{
-			spawnTetromino(new S());
+			nextTetromino();
 		}
 		else
 		{
@@ -156,7 +184,6 @@ void Tetris::spawnTetromino(Tetromino* tetromino)
 
 	fallingTetromino->addPosition(startingPosition);
 	drawTetromino(fallingTetromino);
-
 }
 
 void Tetris::setCell(sf::Int32 x, sf::Int32 y, sf::Int32 symbol)
