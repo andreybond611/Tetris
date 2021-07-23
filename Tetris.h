@@ -36,7 +36,6 @@ public:
 	void rotateFallingTetromino(bool isClockwise);
 	void takeCareOfInput(const sf::Event::KeyEvent& key);
 	virtual void takeCareOfEvent(const sf::Event& event) override;
-	void nextTetromino();
 	virtual void update(const sf::Time& elapsedTime) override;
 	std::vector<std::vector<PlayfieldCell>> getPlayfield()const { return playfield; }
 private:
@@ -50,12 +49,18 @@ private:
 	bool isColliding(Tetromino* tetromino, bool isClockwise);
 	void speedUp();
 	void slowDown();
+	void removeRowAtIndex(sf::Int32 index);
+	void dropDownAllRowsBefore(sf::Int32 rowIndex);
+	void checkForFilledLines();
+	void nextTetromino();
 	
 	const sf::Vector2i startingPosition{4, 1};
 	Tetromino* fallingTetromino;
 	std::vector<std::vector<PlayfieldCell>> playfield;
 	sf::Int64 timeCounter{0};
-	sf::Int64 maxTime{ 1000000 };
+	sf::Int64 maxTime{ 500000 };
 	TetroQueue Queue {};
+	sf::Int64 fastSpeedTime {50000};
+	sf::Int64 normalSpeedTime {500000};
 };
 

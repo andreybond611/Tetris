@@ -6,7 +6,7 @@
 TetroQueue::TetroQueue()
 {
 	queues[0] = std::vector(defaultTetros.begin(), defaultTetros.end());
-	
+
 	std::random_device rd;
 	std::mt19937 generator(rd());
 	std::ranges::shuffle(queues[0], generator);
@@ -39,12 +39,9 @@ Tetromino* TetroQueue::GetNext()
 	{
 		return pop();
 	}
-	else
-	{
-		changeQueue();
+	changeQueue();
+	return pop();
 
-		return pop();
-	}
 }
 
 void TetroQueue::createQueue(std::vector<tetroType>& queue)

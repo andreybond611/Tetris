@@ -1,6 +1,7 @@
 #include "Tetris.h"
 
 #include <functional>
+#include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
@@ -101,12 +102,52 @@ void Tetris::rotateFallingTetromino(bool isClockwise)
 
 void Tetris::speedUp()
 {
-	maxTime = 50000;
+	maxTime = fastSpeedTime;
 }
 
 void Tetris::slowDown()
 {
-	maxTime = 1000000;
+	maxTime = normalSpeedTime;
+}
+
+void Tetris::removeRowAtIndex(sf::Int32 index)
+{
+	for (sf::Int32 columnCount = 0; columnCount < playfieldSize.x; ++columnCount)
+	{
+		setCell(columnCount, index, EMPTY);
+	}
+}
+
+void Tetris::dropDownAllRowsBefore(sf::Int32 rowIndex)
+{
+	for (sf::Int32 rowCount = rowIndex; rowCount > 0; --rowCount)
+	{
+		for (sf::Int32 columnCount = 0; columnCount < playfieldSize.x; ++columnCount)
+		{
+			setCell(columnCount, rowCount, getCell(columnCount, rowCount - 1));
+		}
+	}
+}
+
+void Tetris::checkForFilledLines()
+{
+	for (sf::Int32 rowCount = 0; rowCount < playfieldSize.y; ++rowCount)
+	{
+		bool isFilled = true;
+		for (sf::Int32 columnCount = 0; columnCount < playfieldSize.x; ++columnCount)
+		{			
+			const sf::Int32 cell = getCell(columnCount, rowCount);
+			if (cell == EMPTY)
+			{
+				isFilled = false;
+			}
+		}
+		if (isFilled)
+		{
+			removeRowAtIndex(rowCount);
+			dropDownAllRowsBefore(rowCount);
+		}
+	}
 }
 
 void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
@@ -153,6 +194,7 @@ void Tetris::takeCareOfEvent(const sf::Event& event)
 
 void Tetris::nextTetromino()
 {
+	checkForFilledLines();
 	delete fallingTetromino;
 	spawnTetromino(Queue.GetNext());
 }
