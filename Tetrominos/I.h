@@ -6,6 +6,7 @@ class I : public Tetromino
 public:
 	I();
 
+	/** I-tetromino has no central pivot, so rotations are hardcoded */
 	void rotate(bool isClockwise) override;
 
 private:

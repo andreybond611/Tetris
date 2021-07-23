@@ -7,6 +7,7 @@
 class Tetromino;
 
 constexpr sf::Int32 maxTetros = 7;
+
 constexpr sf::Int32 queueNumber = 2;
 
 enum class tetroType
@@ -20,16 +21,20 @@ enum class tetroType
 	Z
 };
 
+/**
+ * randomly generate sequences of tetrominos
+ */
 class TetroQueue
 {
 public:
 	TetroQueue();
 
-	Tetromino* GetNext();
+	/** returns next tetro and removes it from queue */
+	Tetromino* getNext();
 private:
-	Tetromino* CreateTetrominoOfType(tetroType type);
+	Tetromino* createTetrominoOfType(tetroType type);
 	void changeQueue();
-	void createQueue(std::vector<tetroType>& queue);
+	void fillQueue(std::vector<tetroType>& queue);
 	Tetromino* pop();
 	
 	sf::Int32 currentQueueIndex = 0;	

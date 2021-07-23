@@ -50,7 +50,7 @@ void I::addOffset(std::array<sf::Vector2i, Cells> rotationOffset, sf::Int32 sign
 {
 	for (sf::Int32 pointCount = 0; pointCount < Cells; ++pointCount)
 	{
-		position[pointCount] += (rotationOffset[pointCount] * sign);
+		position[pointCount] += rotationOffset[pointCount] * sign;
 	}
 }
 

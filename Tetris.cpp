@@ -26,7 +26,7 @@ Tetris::Tetris()
 		}
 	}
 
-	spawnTetromino(Queue.GetNext());
+	spawnTetromino(tetroQueue.getNext());
 }
 
 Tetris::~Tetris()
@@ -129,7 +129,7 @@ void Tetris::dropDownAllRowsBefore(sf::Int32 rowIndex)
 	}
 }
 
-void Tetris::checkForFilledLines()
+void Tetris::clearFilledLines()
 {
 	for (sf::Int32 rowCount = 0; rowCount < playfieldSize.y; ++rowCount)
 	{
@@ -150,7 +150,7 @@ void Tetris::checkForFilledLines()
 	}
 }
 
-void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
+void Tetris::processInput(const sf::Event::KeyEvent& key)
 {
 	const auto left = sf::Vector2i(-1, 0);
 	const auto right = sf::Vector2i(1, 0);
@@ -177,11 +177,11 @@ void Tetris::takeCareOfInput(const sf::Event::KeyEvent& key)
 	}
 }
 
-void Tetris::takeCareOfEvent(const sf::Event& event)
+void Tetris::processEvent(const sf::Event& event)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
-		takeCareOfInput(event.key);
+		processInput(event.key);
 	}
 	else if (event.type == sf::Event::KeyReleased)
 	{
@@ -194,9 +194,9 @@ void Tetris::takeCareOfEvent(const sf::Event& event)
 
 void Tetris::nextTetromino()
 {
-	checkForFilledLines();
+	clearFilledLines();
 	delete fallingTetromino;
-	spawnTetromino(Queue.GetNext());
+	spawnTetromino(tetroQueue.getNext());
 }
 
 void Tetris::update(const sf::Time& elapsedTime)

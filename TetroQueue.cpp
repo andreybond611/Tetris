@@ -20,7 +20,7 @@ Tetromino* TetroQueue::pop()
 	const tetroType type = currentQueue[currentQueue.size() - 1];
 	currentQueue.pop_back();
 
-	return CreateTetrominoOfType(type);
+	return createTetrominoOfType(type);
 }
 
 void TetroQueue::changeQueue()
@@ -28,12 +28,12 @@ void TetroQueue::changeQueue()
 	currentQueueIndex++;
 	currentQueueIndex %= queueNumber;
 
-	createQueue(currentQueue);
+	fillQueue(currentQueue);
 
 	currentQueue = queues[currentQueueIndex];
 }
 
-Tetromino* TetroQueue::GetNext()
+Tetromino* TetroQueue::getNext()
 {
 	if (!currentQueue.empty())
 	{
@@ -44,7 +44,7 @@ Tetromino* TetroQueue::GetNext()
 
 }
 
-void TetroQueue::createQueue(std::vector<tetroType>& queue)
+void TetroQueue::fillQueue(std::vector<tetroType>& queue)
 {
 	queue = std::vector(defaultTetros.begin(), defaultTetros.end());
 
@@ -53,7 +53,7 @@ void TetroQueue::createQueue(std::vector<tetroType>& queue)
 	std::ranges::shuffle(queue, generator);
 }
 
-Tetromino* TetroQueue::CreateTetrominoOfType(tetroType type)
+Tetromino* TetroQueue::createTetrominoOfType(tetroType type)
 {
 	switch (type)
 	{
