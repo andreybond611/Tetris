@@ -10,7 +10,7 @@ I::I()
 	symbol = 'i';
 
 	pivotPtr = &position[1];
-
+	
 	rotationOffsets[0][0] = sf::Vector2i(2, -1);
 	rotationOffsets[0][1] = sf::Vector2i(1, 0);
 	rotationOffsets[0][2] = sf::Vector2i(0, 1);
@@ -44,6 +44,13 @@ void I::rotate(bool isClockwise)
 		decrementRotationState();
 		addOffset(rotationOffsets[RotationState], -1);	
 	}
+}
+
+Tetromino* I::getCopy()
+{
+	Tetromino* result = new I();
+	result->setPosition(getPosition());
+	return result;
 }
 
 void I::addOffset(std::array<sf::Vector2i, Cells> rotationOffset, sf::Int32 sign)

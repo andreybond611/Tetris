@@ -17,3 +17,10 @@ void O::rotate(bool isClockwise)
 	// can't rotate
 }
 
+Tetromino* O::getCopy()
+{
+	Tetromino* result = new O();
+	result->setPosition(getPosition());
+	return result;
+}
+

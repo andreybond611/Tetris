@@ -5,4 +5,5 @@ class T : public Tetromino
 {
 public:
 	T();
+	Tetromino* getCopy() override;
 };

@@ -8,7 +8,7 @@ public:
 
 	/** I-tetromino has no central pivot, so rotations are hardcoded */
 	void rotate(bool isClockwise) override;
-
+	Tetromino* getCopy() override;
 private:
 	static constexpr sf::Int32 Cells = 4;
 	static constexpr sf::Int32 Rotations = 4;

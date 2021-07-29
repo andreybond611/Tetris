@@ -12,3 +12,10 @@ Z::Z()
 	pivotPtr = &position[2];
 }
 
+Tetromino* Z::getCopy()
+{
+	Tetromino* result = new Z();
+	result->setPosition(getPosition());
+	return result;
+}
+

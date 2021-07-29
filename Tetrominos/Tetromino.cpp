@@ -9,6 +9,11 @@ void Tetromino::addPosition(sf::Vector2i positionToAdd)
 	}
 }
 
+void Tetromino::setPosition(std::array<sf::Vector2i, cellNumber> positionToSet)
+{
+	position = positionToSet;
+}
+
 void Tetromino::rotate(bool isClockwise)
 {
 	for (auto& point : position)
@@ -29,3 +34,4 @@ void Tetromino::fall()
 {
 	addPosition(sf::Vector2i(0, 1));
 }
+

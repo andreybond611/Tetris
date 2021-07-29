@@ -16,6 +16,8 @@ public:
 	/** change position */
 	void addPosition(sf::Vector2i positionToAdd);
 
+	void setPosition(std::array<sf::Vector2i, cellNumber> positionToSet);
+
 	/** manipulate position to rotate around pivot */
 	virtual void rotate(bool isClockwise);
 	
@@ -27,6 +29,8 @@ public:
 	[[nodiscard]] std::array<sf::Vector2i, cellNumber> getPosition()const { return position; }
 
 	[[nodiscard]] sf::Int32 getSymbol()const { return symbol; }
+
+	virtual Tetromino* getCopy() = 0;
 
 protected:
 	/** points of each cell on the playfield */

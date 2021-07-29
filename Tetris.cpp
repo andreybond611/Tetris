@@ -90,14 +90,49 @@ void Tetris::moveFallingTetromino(const sf::Vector2i direction)
 	}
 }
 
+void Tetris::simulateWallKick(bool isClockwise)
+{
+	const auto left = sf::Vector2i(-1, 0);
+	const auto right = sf::Vector2i(1, 0);
+
+	eraseTetromino(fallingTetromino);
+	Tetromino* copy = fallingTetromino->getCopy();
+	copy->rotate(isClockwise);
+	copy->addPosition(left);
+	if (!isColliding(copy))
+	{
+		fallingTetromino->rotate(isClockwise);
+		fallingTetromino->addPosition(left);
+		drawTetromino(fallingTetromino);
+	}
+	else
+	{
+		copy->addPosition(right * 2);
+		if (!isColliding(copy))
+		{
+			fallingTetromino->rotate(isClockwise);
+			fallingTetromino->addPosition(right);
+			drawTetromino(fallingTetromino);
+		}
+	}
+	drawTetromino(fallingTetromino);
+		
+	delete copy;
+}
+
 void Tetris::rotateFallingTetromino(bool isClockwise)
 {
+	
 	if (!isColliding(fallingTetromino, isClockwise))
 	{
 		eraseTetromino(fallingTetromino);
 		fallingTetromino->rotate(isClockwise);
 		drawTetromino(fallingTetromino);
-	}	
+	}
+	else
+	{
+		simulateWallKick(isClockwise);
+	}
 }
 
 void Tetris::speedUp()
@@ -258,6 +293,26 @@ bool Tetris::isPointInPlayfieldBorders(const sf::Vector2i& point)
 {
 	return point.x < playfieldSize.x && point.y < playfieldSize.y
 		&& point.x >= 0 && point.y >= 0;
+}
+
+bool Tetris::isColliding(Tetromino* tetromino)
+{
+	for (auto& point : tetromino->getPosition())
+	{
+		if (isPointInPlayfieldBorders(point))
+		{
+			const sf::Int32 cellToCheck = getCell(point.x, point.y);
+			if (cellToCheck != EMPTY)
+			{
+				return true;
+			}
+		}
+		else
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 bool Tetris::isColliding(Tetromino* tetromino, sf::Vector2i direction)

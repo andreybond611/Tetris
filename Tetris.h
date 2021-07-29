@@ -40,6 +40,9 @@ private:
 	void moveFallingTetromino(sf::Vector2i direction);
 	void rotateFallingTetromino(bool isClockwise);
 
+	/** if rotated tetromino collides we try to push it away from collisions*/
+	void simulateWallKick(bool isClockwise);
+
 	/** handle key presses */
 	void processInput(const sf::Event::KeyEvent& key);
 	
@@ -61,6 +64,8 @@ private:
 
 	/** true if 0 > point < playfieldSize */
 	bool isPointInPlayfieldBorders(const sf::Vector2i& point);
+
+	bool isColliding(Tetromino* tetromino);
 
 	/** true if collides on moving */	
 	bool isColliding(Tetromino* tetromino, sf::Vector2i direction);
